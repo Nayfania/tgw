@@ -1,9 +1,9 @@
-FROM php_8.1
+FROM php_8.2
 
 COPY 000-default.conf /etc/apache2/sites-available/000-default.conf
 
 RUN apt-get update
-RUN apt-get install -y php8.1-xdebug
+RUN apt-get install -y php8.2-xdebug
 
 RUN curl -sS https://getcomposer.org/installer | php
 RUN mv composer.phar /usr/local/bin/composer
