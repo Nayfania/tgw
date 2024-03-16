@@ -1,0 +1,35 @@
+version: '3'
+services:
+  app:
+    build: ./.
+    container_name: tgw-app
+    ports:
+      - 80:80       # Apache HTTP
+      - 443:443     # Apache HTTPS
+    volumes:
+      - /home/alegkiy/www/tgw:/var/www/html
+    depends_on:
+      - db
+    networks:
+      - tgw
+    environment:
+      - SERVER_HOST=127.0.0.1
+
+  db:
+    image: test-dev_db
+    container_name: tgw-db
+    ports:
+      - "3306:3306" # MySQL Server
+    volumes:
+      - /home/alegkiy/mysql:/var/lib/mysql
+    networks:
+      - tgw
+
+  memcached:
+    image: memcached
+    container_name: tgw-memcached
+    networks:
+      - tgw
+
+networks:
+  tgw:
