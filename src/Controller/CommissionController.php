@@ -16,12 +16,15 @@ class CommissionController extends AbstractController
     {
         $form = $this->createForm(FileType::class);
         $form->handleRequest($request);
+        $data = [];
         if ($form->isSubmitted() && $form->isValid()) {
             $file = $form->get('file')->getData();
+            $data = $commissionManager->calculate($file);
         }
 
         return $this->render('/commission/calculate.html.twig', [
             'form' => $form,
+            'data' => $data,
         ]);
     }
 }

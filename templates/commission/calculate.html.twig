@@ -6,6 +6,26 @@
             <div class="col-md-auto">
                 {{ form(form) }}
             </div>
+            {% if data|length > 0 %}
+                <div class="row">
+                    <table class="table">
+                        <tr>
+                        <th>BIN</th>
+                        <th>Amount</th>
+                        <th>Currency</th>
+                        <th>Commission</th>
+                        </tr>
+                        {% for row in data %}
+                            <tr>
+                                <td>{{ row['bin'] }}</td>
+                                <td>{{ row['amount'] }}</td>
+                                <td>{{ row['currency'] }}</td>
+                                <td>{{ row['commission'] }}</td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            {% endif %}
         </div>
     </div>
 {% endblock body %}
