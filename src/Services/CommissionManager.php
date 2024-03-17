@@ -2,23 +2,22 @@
 
 namespace App\Services;
 
-use Symfony\Component\HttpFoundation\File\UploadedFile;
+use App\Services\Interfaces\CountryResolverInterface;
+use App\Services\Interfaces\ExchangeRatesInterface;
 
 class CommissionManager
 {
     public function __construct(
-        private readonly CountryResolver $countryResolver,
-        private readonly ExchangeRates   $exchangeRates
+        private readonly CountryResolverInterface $countryResolver,
+        private readonly ExchangeRatesInterface   $exchangeRates
     )
     {
     }
 
-    public function calculate(UploadedFile $file): array
+    public function calculate(array $rows): array
     {
-        $content = $file->getContent();
-
         $result = [];
-        foreach (explode("\n", $content) as $row) {
+        foreach ($rows as $row) {
 
             if (empty($row) || !json_validate($row)) {
                 continue;

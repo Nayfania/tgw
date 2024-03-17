@@ -2,9 +2,10 @@
 
 namespace App\Services;
 
+use App\Services\Interfaces\CountryResolverInterface;
 use GuzzleHttp\Client;
 
-class CountryResolver
+class CountryResolver implements CountryResolverInterface
 {
     public function byBIN(string $bin): string
     {

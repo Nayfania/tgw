@@ -2,11 +2,12 @@
 
 namespace App\Services;
 
+use App\Services\Interfaces\ExchangeRatesInterface;
 use GuzzleHttp\Client;
 use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Contracts\Cache\ItemInterface;
 
-class ExchangeRates
+class ExchangeRates implements ExchangeRatesInterface
 {
     public function __construct(private readonly CacheInterface $cache)
     {
