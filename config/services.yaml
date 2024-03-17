@@ -26,3 +26,12 @@ services:
     arguments:
       $countryResolver: '@App\Services\CountryResolver'
       $exchangeRates: '@App\Services\ExchangeRates'
+
+  App\Services\ExchangeRates:
+    arguments:
+      $uri: '%env(EXCHANGE_API_URI)%'
+      $apiKey: '%env(EXCHANGE_API_KEY)%'
+
+  App\Services\CountryResolver:
+    arguments:
+      $uri: '%env(BINLIST_URI)%'

@@ -7,9 +7,13 @@ use GuzzleHttp\Client;
 
 class CountryResolver implements CountryResolverInterface
 {
+    public function __construct(private readonly string $uri)
+    {
+    }
+
     public function byBIN(string $bin): string
     {
-        $client = new Client(['base_uri' => 'https://lookup.binlist.net/']);
+        $client = new Client(['base_uri' => $this->uri]);
         $response = $client->get($bin);
 
         $lookup = json_decode($response->getBody()->getContents());
@@ -20,6 +24,7 @@ class CountryResolver implements CountryResolverInterface
     public function isEu(string $bin): bool
     {
         $countryCode = $this->byBIN($bin);
+
         return match ($countryCode) {
             'AT', 'BE', 'BG', 'CY', 'CZ', 'DE', 'DK', 'EE', 'ES', 'FI', 'FR', 'GR', 'HR', 'HU', 'IE', 'IT', 'LT', 'LU', 'LV', 'MT', 'NL', 'PO', 'PT', 'RO', 'SE', 'SI', 'SK' => true,
             default => false,

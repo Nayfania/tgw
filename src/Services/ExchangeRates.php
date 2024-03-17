@@ -9,7 +9,11 @@ use Symfony\Contracts\Cache\ItemInterface;
 
 class ExchangeRates implements ExchangeRatesInterface
 {
-    public function __construct(private readonly CacheInterface $cache)
+    public function __construct(
+        private readonly CacheInterface $cache,
+        private readonly string         $uri,
+        private readonly string         $apiKey
+    )
     {
     }
 
@@ -20,8 +24,8 @@ class ExchangeRates implements ExchangeRatesInterface
             $item->expiresAfter(3600 * 24);
 
             $client = new Client([
-                'base_uri' => 'https://api.apilayer.com/',
-                'headers' => ['apikey' => 'GiAZvlMuKilho1M3Qgx1CjZv6o2bOZws']
+                'base_uri' => $this->uri,
+                'headers' => ['apikey' => $this->apiKey]
             ]);
             $response = $client->get('exchangerates_data/latest');
             $content = json_decode($response->getBody()->getContents(), true);
