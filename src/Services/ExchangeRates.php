@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Services\Interfaces\ExchangeRatesInterface;
 use GuzzleHttp\Client;
+use Psr\Cache\InvalidArgumentException;
 use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Contracts\Cache\ItemInterface;
 
@@ -17,6 +18,9 @@ class ExchangeRates implements ExchangeRatesInterface
     {
     }
 
+    /**
+     * @throws InvalidArgumentException
+     */
     public function getByCurrency(string $code)
     {
         $rates = $this->cache->get('exchanges', function (ItemInterface $item): array {
@@ -28,7 +32,7 @@ class ExchangeRates implements ExchangeRatesInterface
                 'headers' => ['apikey' => $this->apiKey]
             ]);
             $response = $client->get('exchangerates_data/latest');
-            $content = json_decode($response->getBody()->getContents(), true);
+            $content = json_decode($response->getBody()->getContents(), true, 512, JSON_THROW_ON_ERROR);
 
             $item->set($content['rates']);
 

@@ -25,12 +25,17 @@ class CommissionManager
 
             ['bin' => $bin, 'amount' => $amount, 'currency' => $currency] = json_decode($row, true);
 
-            $rate = $this->exchangeRates->getByCurrency($currency);
+            try {
+                $rate = $this->exchangeRates->getByCurrency($currency);
+                $isEu = $this->countryResolver->isEu($bin);
+            } catch (\Exception $exception) {
+                continue;
+            }
+
             if ($currency !== 'EUR' || $rate > 0) {
                 $amount = bcdiv($amount, $rate, 2);
             }
 
-            $isEu = $this->countryResolver->isEu($bin);
             $result[] = [
                 'bin' => $bin,
                 'amount' => $amount,
